@@ -1,0 +1,46 @@
+:root {
+  --color-night: #07060f;
+  --color-ink: #f4f2ff;
+  --color-dim: #a9a3c4;
+  --color-line: rgba(244, 242, 255, 0.18);
+  --color-violet: #7b3fe4;
+  --color-cyan: #22e3ff;
+  --color-magenta: #ff2fa0;
+  --color-amber: #ffb347;
+  --color-white: #ffffff;
+
+  /* 場面の色。JS（clock.js）が場面ごとに差し替える。JS なしでも紫で成立する */
+  --accent: var(--color-violet);
+  --accent-2: var(--color-cyan);
+  --bg: #07060f;
+
+  --font-display: "Bebas Neue", "Arial Narrow", Impact, sans-serif;
+  --font-ja: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+
+  --margin: 5vw;
+  --margin-end: 5vw;
+  --gap: 2vw;
+  --header-height: 64px;
+  --space-section: clamp(120px, 16vw, 240px);
+  --space-block: clamp(40px, 5vw, 80px);
+
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* PC では、右端の目盛りの分だけ右の余白を広げる */
+@media (min-width: 1100px) {
+  :root {
+    --margin-end: calc(5vw + 72px);
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --margin: 20px;
+    --margin-end: 20px;
+    --gap: 12px;
+    --header-height: 72px;
+    --space-section: 110px;
+  }
+}

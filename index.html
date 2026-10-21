@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZENITH 2027｜夜が、いちばん深くなる時刻へ。架空の野外音楽フェス【サンプルサイト】</title>
+  <meta name="description" content="18:00 の開場から 05:30 の夜明けまで、一夜の進行をそのままスクロールする架空の野外音楽フェス「ZENITH」の公式サイト見本。3Dの照明、音、閃光。日付・会場・出演者・料金・写真（AI生成）はすべて架空です。">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#07060f">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ZENITH 2027｜夜が、いちばん深くなる時刻へ。">
+  <meta property="og:description" content="一夜の進行をそのままスクロールする、架空の野外音楽フェスのサイト見本。">
+  <meta property="og:image" content="assets/images/zenith.webp">
+  <link rel="icon" href="assets/images/favicon/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script src="assets/js/anchor-scroll.js" defer></script>
+  <script src="assets/js/clock.js" defer></script>
+  <script src="assets/js/menu.js" defer></script>
+  <script src="assets/js/audio.js" defer></script>
+  <script type="module" src="assets/js/stage3d.js"></script>
+</head>
+<body id="top" data-scene="open">
+  <a class="skip-link" href="#main">本文へスキップ</a>
+
+  <!-- 3Dのステージ照明。ページの奥で常に動く（WebGL が使えない時は写真に置きかわる） -->
+  <div class="stage3d" id="stage3d" aria-hidden="true">
+    <canvas class="stage3d__canvas" id="stage3d-canvas"></canvas>
+    <div class="stage3d__fallback"></div>
+    <div class="stage3d__flash" id="stage3d-flash"></div>
+  </div>
+
+  <header class="header" id="header">
+    <a class="header__logo" href="#top" aria-label="ZENITH 先頭へ戻る">ZENITH</a>
+    <p class="clock" id="clock">
+      <span class="clock__now">NOW</span>
+      <time class="clock__time" id="clock-time" datetime="18:00">18:00</time>
+      <span class="clock__scene" id="clock-scene">開場</span>
+      <span class="clock__count" id="clock-count">01 / 07</span>
+    </p>
+    <div class="header__actions">
+      <button class="sound" id="sound" type="button" aria-pressed="false">
+        <span class="sound__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="sound__label">SOUND <span class="sound__state" id="sound-state">OFF</span></span>
+      </button>
+      <a class="header__ticket" href="#tickets">TICKETS</a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu">TIME</button>
+    </div>
+    <div class="header__bar" aria-hidden="true"><span class="header__bar-fill" id="header-bar"></span></div>
+  </header>
+
+  <!-- 時間割の目次。PCは右端に常時、スマホは TIME ボタンで全画面 -->
+  <nav class="menu" id="menu" aria-label="時刻の目次" hidden>
+    <div class="menu__inner">
+      <p class="menu__title">ONE NIGHT · 18:00 → 05:30</p>
+      <ol class="menu__list">
+        <li><a class="menu__link" href="#open" data-scene="open"><time>18:00</time><span>開場　OPEN</span></a></li>
+        <li><a class="menu__link" href="#lineup" data-scene="lineup"><time>19:30</time><span>出演　LINEUP</span></a></li>
+        <li><a class="menu__link" href="#stages" data-scene="stages"><time>21:00</time><span>舞台　STAGES</span></a></li>
+        <li><a class="menu__link" href="#timetable" data-scene="timetable"><time>22:30</time><span>時間割　TIMETABLE</span></a></li>
+        <li><a class="menu__link" href="#zenith" data-scene="zenith"><time>00:00</time><span>頂点　ZENITH</span></a></li>
+        <li><a class="menu__link" href="#tickets" data-scene="tickets"><time>02:00</time><span>券　TICKETS</span></a></li>
+        <li><a class="menu__link" href="#dawn" data-scene="dawn"><time>05:30</time><span>夜明け　DAWN / ACCESS</span></a></li>
+      </ol>
+      <button class="menu__close" id="menu-close" type="button">閉じる</button>
+    </div>
+  </nav>
+
+  <nav class="rail" aria-label="時刻の目盛り（目次）">
+    <span class="rail__line" aria-hidden="true"></span>
+    <a class="rail__tick" href="#open" data-scene="open" aria-label="18:00 開場"><span>18:00</span></a>
+    <a class="rail__tick" href="#lineup" data-scene="lineup" aria-label="19:30 出演"><span>19:30</span></a>
+    <a class="rail__tick" href="#stages" data-scene="stages" aria-label="21:00 舞台"><span>21:00</span></a>
+    <a class="rail__tick" href="#timetable" data-scene="timetable" aria-label="22:30 時間割"><span>22:30</span></a>
+    <a class="rail__tick rail__tick--zenith" href="#zenith" data-scene="zenith" aria-label="00:00 頂点"><span>00:00</span></a>
+    <a class="rail__tick" href="#tickets" data-scene="tickets" aria-label="02:00 券"><span>02:00</span></a>
+    <a class="rail__tick" href="#dawn" data-scene="dawn" aria-label="05:30 夜明け"><span>05:30</span></a>
+    <span class="rail__marker" id="rail-marker" aria-hidden="true"></span>
+  </nav>
+
+  <main id="main">
+
+    <!-- 01 18:00 開場 -->
+    <section class="scene cover" id="open" data-scene="open" data-time="0" data-label="開場" aria-labelledby="open-title">
+      <p class="cover__date reveal"><span>2027.07.24 SAT 18:00</span><span class="cover__arrow" aria-hidden="true">→</span><span>07.25 SUN 05:30</span></p>
+      <h1 class="cover__title" id="open-title"><span class="cover__word">ZENITH</span><span class="cover__year">2027</span></h1>
+      <p class="cover__catch reveal"><span class="cover__line">夜が、</span><span class="cover__line">いちばん深くなる時刻へ。</span></p>
+      <p class="cover__place reveal">湖畔高原 特設会場（架空）　OPEN AIR · ONE NIGHT · 3 STAGES</p>
+      <div class="cover__actions reveal">
+        <button class="btn btn--glow" type="button" data-sound-start>音を出す <span class="btn__note">タップで照明が音に合わせて動く</span></button>
+        <a class="btn btn--line" href="#lineup">夜をはじめる ↓</a>
+      </div>
+    </section>
+
+    <!-- 02 19:30 LINEUP -->
+    <section class="scene lineup" id="lineup" data-scene="lineup" data-time="90" data-label="出演" aria-labelledby="lineup-title">
+      <header class="scene__head">
+        <p class="scene__time" aria-hidden="true">19:30</p>
+        <h2 class="scene__title" id="lineup-title">LINEUP<span class="scene__ja">出演</span></h2>
+      </header>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span>AURORA UNIT · KŌMORI · NAKANO PULSE · LOW ORBIT · sayo. · VELVET ENGINE · 0.5 DEGREES · HARU &amp; THE BLUE HOURS · MIDNIGHT DIAL · TOMOE SATO · LUMENWORKS · PAPER SATELLITE · </span><span>AURORA UNIT · KŌMORI · NAKANO PULSE · LOW ORBIT · sayo. · VELVET ENGINE · 0.5 DEGREES · HARU &amp; THE BLUE HOURS · MIDNIGHT DIAL · TOMOE SATO · LUMENWORKS · PAPER SATELLITE · </span>
+        </div>
+      </div>
+      <ul class="acts">
+        <li class="acts__item acts__item--xl reveal"><span class="acts__name">AURORA UNIT</span><span class="acts__meta">ZENITH STAGE · 00:00</span></li>
+        <li class="acts__item reveal"><span class="acts__name">KŌMORI</span><span class="acts__meta">LAKE · 23:00</span></li>
+        <li class="acts__item reveal"><span class="acts__name">NAKANO PULSE</span><span class="acts__meta">ZENITH · 22:30</span></li>
+        <li class="acts__item acts__item--lg reveal"><span class="acts__name">LOW ORBIT</span><span class="acts__meta">FOREST · 01:30</span></li>
+        <li class="acts__item reveal"><span class="acts__name">sayo.</span><span class="acts__meta">LAKE · 04:30 夜明け</span></li>
+        <li class="acts__item reveal"><span class="acts__name">VELVET ENGINE</span><span class="acts__meta">ZENITH · 21:00</span></li>
+        <li class="acts__item acts__item--lg reveal"><span class="acts__name">0.5 DEGREES</span><span class="acts__meta">FOREST · 23:30</span></li>
+        <li class="acts__item reveal"><span class="acts__name">HARU &amp; THE BLUE HOURS</span><span class="acts__meta">LAKE · 19:30</span></li>
+        <li class="acts__item reveal"><span class="acts__name">MIDNIGHT DIAL</span><span class="acts__meta">ZENITH · 02:00</span></li>
+        <li class="acts__item reveal"><span class="acts__name">TOMOE SATO</span><span class="acts__meta">FOREST · 20:00</span></li>
+        <li class="acts__item reveal"><span class="acts__name">LUMENWORKS</span><span class="acts__meta">ZENITH · 03:30</span></li>
+        <li class="acts__item reveal"><span class="acts__name">PAPER SATELLITE</span><span class="acts__meta">FOREST · 19:00</span></li>
+      </ul>
+      <div class="portraits">
+        <figure class="portraits__item reveal">
+          <img src="assets/images/artists/a1.webp" width="832" height="1216" loading="lazy" alt="白い光の壁と大観衆に向かって、ミキサー卓を操るDJの後ろ姿">
+          <figcaption>AURORA UNIT</figcaption>
+        </figure>
+        <figure class="portraits__item portraits__item--shift reveal">
+          <img src="assets/images/artists/a2.webp" width="832" height="1216" loading="lazy" alt="紫の靄と無数のスマホの光に向かって、片手を高く上げる歌い手の影">
+          <figcaption>KŌMORI</figcaption>
+        </figure>
+        <figure class="portraits__item reveal">
+          <img src="assets/images/artists/a3.webp" width="832" height="1216" loading="lazy" alt="靄の中をシアンのレーザーが走る舞台で、観客に向かって叩くドラマーの後ろ姿">
+          <figcaption>VELVET ENGINE</figcaption>
+        </figure>
+      </div>
+      <p class="scene__note">出演者はすべて架空です。</p>
+      <nav class="scene__nav" aria-label="前後の時刻"><a href="#open">← 18:00 開場</a><a href="#stages">21:00 舞台 →</a></nav>
+    </section>
+
+    <!-- 03 21:00 STAGES -->
+    <section class="scene stages" id="stages" data-scene="stages" data-time="180" data-label="舞台" aria-labelledby="stages-title">
+      <header class="scene__head">
+        <p class="scene__time" aria-hidden="true">21:00</p>
+        <h2 class="scene__title" id="stages-title">3 STAGES<span class="scene__ja">舞台</span></h2>
+      </header>
+      <figure class="plate plate--wide reveal">
+        <img src="assets/images/stage.webp" width="1216" height="832" loading="lazy" alt="群衆の後ろから見た夜のメインステージ。靄の中を何十本ものレーザーが走る">
+        <figcaption>ZENITH STAGE　夜の湖に向かって立つ、いちばん大きな舞台</figcaption>
+      </figure>
+      <div class="stage-list">
+        <article class="stage-card stage-card--main reveal" data-stage="main">
+          <p class="stage-card__num" aria-hidden="true">01</p>
+          <h3 class="stage-card__name">ZENITH STAGE</h3>
+          <p class="stage-card__text">湖に向かって開いた主舞台。幅60mのLEDの壁と、空へ抜ける48本のビーム。00:00、ここで夜が頂点を迎える。</p>
+          <p class="stage-card__color"><span style="--c: var(--color-violet)"></span>紫　VIOLET</p>
+        </article>
+        <article class="stage-card stage-card--lake reveal" data-stage="lake">
+          <p class="stage-card__num" aria-hidden="true">02</p>
+          <h3 class="stage-card__name">LAKE STAGE</h3>
+          <p class="stage-card__text">水面に浮かぶ舞台。光が湖に映って、二つに見える。夜明けの最後の一組はここで。</p>
+          <p class="stage-card__color"><span style="--c: var(--color-cyan)"></span>シアン　CYAN</p>
+        </article>
+        <article class="stage-card stage-card--forest reveal" data-stage="forest">
+          <p class="stage-card__num" aria-hidden="true">03</p>
+          <h3 class="stage-card__name">FOREST STAGE</h3>
+          <p class="stage-card__text">林の中の小さな舞台。木の幹をマゼンタの光が這う。いちばん近くで、いちばん大きな音を。</p>
+          <p class="stage-card__color"><span style="--c: var(--color-magenta)"></span>マゼンタ　MAGENTA</p>
+        </article>
+      </div>
+      <nav class="scene__nav" aria-label="前後の時刻"><a href="#lineup">← 19:30 出演</a><a href="#timetable">22:30 時間割 →</a></nav>
+    </section>
+
+    <!-- 04 22:30 TIMETABLE -->
+    <section class="scene timetable" id="timetable" data-scene="timetable" data-time="270" data-label="時間割" aria-labelledby="timetable-title">
+      <header class="scene__head">
+        <p class="scene__time" aria-hidden="true">22:30</p>
+        <h2 class="scene__title" id="timetable-title">TIMETABLE<span class="scene__ja">時間割</span></h2>
+      </header>
+      <div class="tt reveal" role="table" aria-label="三つの舞台の時間割">
+        <div class="tt__head" role="row">
+          <span class="tt__corner" role="columnheader">時刻</span>
+          <span class="tt__col tt__col--main" role="columnheader">ZENITH</span>
+          <span class="tt__col tt__col--lake" role="columnheader">LAKE</span>
+          <span class="tt__col tt__col--forest" role="columnheader">FOREST</span>
+        </div>
+        <div class="tt__row" role="row"><span class="tt__time" role="rowheader">19:00</span><span class="tt__cell" role="cell"></span><span class="tt__cell tt__cell--lake" role="cell">HARU &amp; THE BLUE HOURS</span><span class="tt__cell tt__cell--forest" role="cell">PAPER SATELLITE</span></div>
+        <div class="tt__row" role="row"><span class="tt__time" role="rowheader">20:00</span><span class="tt__cell" role="cell"></span><span class="tt__cell" role="cell"></span><span class="tt__cell tt__cell--forest" role="cell">TOMOE SATO</span></div>
+        <div class="tt__row" role="row"><span class="tt__time" role="rowheader">21:00</span><span class="tt__cell tt__cell--main" role="cell">VELVET ENGINE</span><span class="tt__cell" role="cell"></span><span class="tt__cell" role="cell"></span></div>
+        <div class="tt__row" role="row"><span class="tt__time" role="rowheader">22:30</span><span class="tt__cell tt__cell--main" role="cell">NAKANO PULSE</span><span class="tt__cell tt__cell--lake" role="cell">KŌMORI <small>23:00</small></span><span class="tt__cell tt__cell--forest" role="cell">0.5 DEGREES <small>23:30</small></span></div>
+        <div class="tt__row tt__row--zenith" role="row"><span class="tt__time" role="rowheader">00:00</span><span class="tt__cell tt__cell--main tt__cell--zenith" role="cell">AURORA UNIT <small>ZENITH</small></span><span class="tt__cell" role="cell"></span><span class="tt__cell" role="cell"></span></div>
+        <div class="tt__row" role="row"><span class="tt__time" role="rowheader">01:30</span><span class="tt__cell" role="cell"></span><span class="tt__cell" role="cell"></span><span class="tt__cell tt__cell--forest" role="cell">LOW ORBIT</span></div>
+        <div class="tt__row" role="row"><span class="tt__time" role="rowheader">02:00</span><span class="tt__cell tt__cell--main" role="cell">MIDNIGHT DIAL</span><span class="tt__cell" role="cell"></span><span class="tt__cell" role="cell"></span></div>
+        <div class="tt__row" role="row"><span class="tt__time" role="rowheader">03:30</span><span class="tt__cell tt__cell--main" role="cell">LUMENWORKS</span><span class="tt__cell" role="cell"></span><span class="tt__cell" role="cell"></span></div>
+        <div class="tt__row" role="row"><span class="tt__time" role="rowheader">04:30</span><span class="tt__cell" role="cell"></span><span class="tt__cell tt__cell--lake" role="cell">sayo. <small>夜明け</small></span><span class="tt__cell" role="cell"></span></div>
+      </div>
+      <p class="scene__note">時間割は架空のものです。</p>
+      <nav class="scene__nav" aria-label="前後の時刻"><a href="#stages">← 21:00 舞台</a><a href="#zenith">00:00 頂点 →</a></nav>
+    </section>
+
+    <!-- 05 00:00 ZENITH -->
+    <section class="scene zenith" id="zenith" data-scene="zenith" data-time="360" data-label="頂点" aria-labelledby="zenith-title">
+      <p class="zenith__time" aria-hidden="true">00:00</p>
+      <h2 class="zenith__title" id="zenith-title"><span class="zenith__word">ZENITH</span><span class="zenith__ja">頂点</span></h2>
+      <p class="zenith__catch"><span class="zenith__line reveal">空の、いちばん高いところ。</span><span class="zenith__line reveal">夜の、いちばん深いところ。</span><span class="zenith__line reveal">その一瞬だけ、全部の光が白になる。</span></p>
+      <figure class="plate plate--zenith reveal">
+        <img src="assets/images/zenith.webp" width="1216" height="832" loading="lazy" alt="舞台から見た真夜中の観客。無数に上がった手の上で、白い閃光が紫の靄を裂く">
+        <figcaption>00:00　AURORA UNIT　ZENITH STAGE</figcaption>
+      </figure>
+      <nav class="scene__nav" aria-label="前後の時刻"><a href="#timetable">← 22:30 時間割</a><a href="#tickets">02:00 券 →</a></nav>
+    </section>
+
+    <!-- 06 02:00 TICKETS -->
+    <section class="scene tickets" id="tickets" data-scene="tickets" data-time="480" data-label="券" aria-labelledby="tickets-title">
+      <header class="scene__head">
+        <p class="scene__time" aria-hidden="true">02:00</p>
+        <h2 class="scene__title" id="tickets-title">TICKETS<span class="scene__ja">券</span></h2>
+      </header>
+      <ul class="plans">
+        <li class="plan reveal">
+          <h3 class="plan__name">ONE NIGHT<span class="plan__ja">一夜券</span></h3>
+          <p class="plan__price"><span class="plan__yen">¥</span>14,800</p>
+          <p class="plan__text">18:00 の開場から 05:30 の夜明けまで。3つの舞台すべて。</p>
+          <button class="btn btn--line btn--block" type="button" aria-describedby="plan-note" disabled>準備中</button>
+        </li>
+        <li class="plan plan--featured reveal">
+          <h3 class="plan__name">AFTER 23<span class="plan__ja">深夜券</span></h3>
+          <p class="plan__price"><span class="plan__yen">¥</span>7,800</p>
+          <p class="plan__text">23:00 から。頂点の 00:00 に間に合う。</p>
+          <button class="btn btn--glow btn--block" type="button" aria-describedby="plan-note" disabled>準備中</button>
+        </li>
+        <li class="plan reveal">
+          <h3 class="plan__name">DAWN<span class="plan__ja">夜明け券</span></h3>
+          <p class="plan__price"><span class="plan__yen">¥</span>3,800</p>
+          <p class="plan__text">03:00 から。湖の舞台で、夜が明けるのを見る。</p>
+          <button class="btn btn--line btn--block" type="button" aria-describedby="plan-note" disabled>準備中</button>
+        </li>
+      </ul>
+      <p class="scene__note" id="plan-note">架空のフェスのため、券は販売していません。料金も架空です。</p>
+      <nav class="scene__nav" aria-label="前後の時刻"><a href="#zenith">← 00:00 頂点</a><a href="#dawn">05:30 夜明け →</a></nav>
+    </section>
+
+    <!-- 07 05:30 DAWN / ACCESS -->
+    <section class="scene dawn" id="dawn" data-scene="dawn" data-time="690" data-label="夜明け" aria-labelledby="dawn-title">
+      <header class="scene__head">
+        <p class="scene__time" aria-hidden="true">05:30</p>
+        <h2 class="scene__title" id="dawn-title">DAWN<span class="scene__ja">夜明け</span></h2>
+      </header>
+      <figure class="plate plate--wide reveal">
+        <img src="assets/images/dawn.webp" width="1216" height="832" loading="lazy" alt="夜が明けた湖畔の草地。座って休む人たちの向こうで、舞台の灯りがまだ薄く残っている">
+        <figcaption>05:30　LAKE STAGE　sayo. の最後の一曲が終わるころ</figcaption>
+      </figure>
+      <div class="info">
+        <section class="info__block reveal" aria-labelledby="access-title">
+          <h3 class="info__title" id="access-title">ACCESS<span class="info__ja">会場</span></h3>
+          <p class="info__text">湖畔高原 特設会場（架空の場所です）。最寄り駅から無料シャトルバスで約40分、を想定。駐車場は事前予約制、を想定。</p>
+        </section>
+        <section class="info__block reveal" aria-labelledby="notes-title">
+          <h3 class="info__title" id="notes-title">NOTES<span class="info__ja">ご案内</span></h3>
+          <ul class="info__list">
+            <li>強い光の点滅（ストロボ）を使う演出があります。このサイトにも、00:00 の場面に閃光があります。</li>
+            <li>夜は冷えます。朝まで過ごす人は上着を。</li>
+            <li>音は、このサイトでは「音を出す」を押したときだけ鳴ります。</li>
+          </ul>
+        </section>
+      </div>
+      <nav class="scene__nav" aria-label="前後の時刻"><a href="#tickets">← 02:00 券</a><a href="#top">18:00 もう一度 ↑</a></nav>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer__logo" aria-hidden="true">ZENITH</p>
+    <p class="footer__text">このサイトは、架空の野外音楽フェスの公式サイトを想定した制作見本です。日付・会場・出演者・料金はすべて架空で、写真は画像生成AIで作成しました。実在の催し・場所・人物とは関係ありません。</p>
+    <p class="footer__tech">3D照明 = Three.js　音 = Web Audio（曲ファイルを使わず、ブラウザの中で鳴らしています）</p>
+    <p class="footer__copy"><small>© 2027 ZENITH (fictional)</small></p>
+  </footer>
+</body>
+</html>
